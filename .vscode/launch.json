@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "name": "Pokemon Body ",
+      "request": "launch",
+      "program": "${workspaceFolder}/dist/index.js",
+      "args": ["--offset=0", "--limit=200"],
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
