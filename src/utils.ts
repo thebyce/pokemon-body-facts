@@ -14,8 +14,8 @@ export const processArgs = (): { offset: number; limit: number } | undefined => 
 
 const usage = (): undefined => {
   console.log(`
-  USAGE: pokemon --limit < LIMIT >= 0 > --offset < OFFSET > 0 >
-  Where: limit > 0 and offset > 0
+  USAGE: pokemon --offset <OFFSET> --limit <LIMIT> 
+  Where: offset >= 0 and limit > 0 
   `);
   return undefined;
 };
