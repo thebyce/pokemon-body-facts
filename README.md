@@ -16,7 +16,17 @@ tsc
 ```
 node ./dist/index --offset <offset> --limit <limit>
 
-or
+#or
 
 yarn pokemon --offset <offset> --limit <limit>
+```
+
+### Test
+
+```
+jest
+
+#or
+
+yarn test
 ```
