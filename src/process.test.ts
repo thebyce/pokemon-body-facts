@@ -206,7 +206,7 @@ describe('calculateAverage', () => {
     expect(calculateAverage(mockData)).toEqual({ heightAve: '1.00', weightAve: '2.00' });
   });
 
-  test('irrational values', () => {
+  test('rational repeating values', () => {
     const mockData: BodyStat[] = [
       { name: 'n1', height: 4, weight: 3, types: [] },
       { name: 'n2', height: 3, weight: 2, types: [] },
