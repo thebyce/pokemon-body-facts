@@ -17,6 +17,7 @@ describe('idsForPage', () => {
     mockGet.mockResolvedValueOnce({
       status: 200,
       data: {
+        count: 12345,
         previous: 'p',
         next: 'n',
         results: [
@@ -26,7 +27,7 @@ describe('idsForPage', () => {
         ],
       },
     });
-    expect(await idsForPage(0, 3)).toEqual([111, 222, 333]);
+    expect(await idsForPage(0, 3)).toEqual({ count: 12345, ids: [111, 222, 333] });
   });
 });
 

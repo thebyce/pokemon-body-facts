@@ -9,10 +9,10 @@ export type TypedBodyStat = { [pokemanType: string]: BodyStat[] };
 export const processPokemonQuery = async (offset: number, limit: number): Promise<{ executionSeconds: number }> => {
   const start = Date.now();
 
-  const pokemonIds = await idsForPage(offset, limit);
+  const { count, ids: pokemonIds } = await idsForPage(offset, limit);
   const bodyStats = await bodyStatsForIds(pokemonIds, CHUNK_SIZE);
   if (bodyStats.length) {
-    reportOverallAverages(bodyStats);
+    reportOverallAverages(bodyStats, count);
     reportAvergesByType(bodyStats);
   } else {
     console.log(`There is no Pokémon data for the requested page: OFFSET=${offset}, LIMIT=${limit}`);
@@ -20,14 +20,17 @@ export const processPokemonQuery = async (offset: number, limit: number): Promis
   return { executionSeconds: (Date.now() - start) / 1000 };
 };
 
-export const idsForPage = async (offset: number, limit: number): Promise<number[]> => {
+export const idsForPage = async (offset: number, limit: number): Promise<{ count: number; ids: number[] }> => {
   const url = `${POKEMON_BASE_URL}?offset=${offset}&limit=${limit}`;
-  const { results } = await axiosGet(url);
+  const { count, results } = await axiosGet(url);
 
-  return results.map((r: { name: string; url: string }) => {
-    const slugs = r.url.split('/');
-    return parseInt(slugs[slugs.length - 2]);
-  });
+  return {
+    count,
+    ids: results.map((r: { name: string; url: string }) => {
+      const slugs = r.url.split('/');
+      return parseInt(slugs[slugs.length - 2]);
+    }),
+  };
 };
 
 export const bodyStatsForIds = async (ids: number[], chunkSize: number): Promise<BodyStat[]> => {
@@ -55,10 +58,10 @@ export const bodyStatsForIdChunk = async (ids: number[]): Promise<BodyStat[]> =>
   }, [] as BodyStat[]);
 };
 
-const reportOverallAverages = (bodyStats: BodyStat[]) => {
+const reportOverallAverages = (bodyStats: BodyStat[], count: number) => {
   const { heightAve, weightAve } = calculateAverage(bodyStats);
   console.log(`
-  AGGREGATE AVERAGES (${bodyStats.length} individual Pokémons):
+  AGGREGATE AVERAGES (${bodyStats.length} of ${count} total Pokémons):
   Height:  ${heightAve}
   Weight: ${weightAve}
   `);
