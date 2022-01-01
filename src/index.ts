@@ -7,12 +7,12 @@ if (!args) exit(1);
 
 const { offset, limit } = args;
 
-try {
-  (async () => {
+(async () => {
+  try {
     const { executionSeconds } = await processPokemonQuery(offset, limit);
     console.log(`
   EXECUTION TIME = ${executionSeconds}s\n`);
-  })();
-} catch (err) {
-  console.log(`Something Went Wrong: MSG = \n${JSON.stringify(err)}\n\n`);
-}
+  } catch (err) {
+    console.log(`Something Went Wrong: MSG = \n${JSON.stringify(err)}\n\n`);
+  }
+})();
